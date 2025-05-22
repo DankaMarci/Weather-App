@@ -9,6 +9,12 @@ plugins {
     alias(libs.plugins.composeHotReload)
 }
 
+//repositories {
+//    mavenCentral()
+//    maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+//    maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+//}
+
 kotlin {
     listOf(
         iosX64(),
@@ -23,30 +29,40 @@ kotlin {
 
     jvm("desktop")
 
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        outputModuleName = "composeApp"
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        outputModuleName = "composeApp"
+//        browser {
+//            val rootDirPath = project.rootDir.path
+//            val projectDirPath = project.projectDir.path
+//            commonWebpackConfig {
+//                outputFileName = "composeApp.js"
+//                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+//                    static = (static ?: mutableListOf()).apply {
+//                        // Serve sources to debug inside browser
+//                        add(rootDirPath)
+//                        add(projectDirPath)
+//                    }
+//                }
+//            }
+//        }
+//        binaries.executable()
+//    }
+
+    js(IR) {
+        binaries.executable()
         browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
             commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
+                cssSupport {
+                    enabled.set(true)
                 }
             }
         }
-        binaries.executable()
     }
 
     sourceSets {
         val desktopMain by getting
         val iosMain by creating
-        val wasmJsMain by getting
 
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -66,14 +82,21 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.ktor.client.okhttp)
             //implementation(libs.ktor.client.java)
+        }
+        val jsMain by getting {
+            jsMain.dependencies {
+                //implementation(compose.web.core)
+                implementation(libs.ktor.client.js)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.html)
+            }
         }
 
         iosMain.dependencies {
@@ -83,15 +106,15 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
         }
 
-        wasmJsMain.dependencies {
-            implementation(compose.web.core)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.js)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.kotlinx.html)
-        }
+//        wasmJsMain.dependencies {
+//            //implementation(compose.web.core)
+//            implementation(libs.ktor.client.core)
+//            implementation(libs.ktor.client.js)
+//            implementation(libs.ktor.client.content.negotiation)
+//            implementation(libs.ktor.serialization.kotlinx.json)
+//            implementation(libs.kotlinx.serialization.json)
+//            implementation(libs.kotlinx.html)
+//        }
     }
 }
 
