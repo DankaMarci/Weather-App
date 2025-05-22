@@ -45,6 +45,8 @@ kotlin {
 
     sourceSets {
         val desktopMain by getting
+        val iosMain by creating
+        val wasmJsMain by getting
 
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -71,11 +73,20 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.ktor.client.okhttp)
+            //implementation(libs.ktor.client.java)
         }
+
+        iosMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+            implementation(libs.ktor.client.darwin)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+        }
+
         wasmJsMain.dependencies {
             implementation(compose.web.core)
-            implementation(libs.ktor.client.js)
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.js)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)

@@ -1,4 +1,3 @@
-// shared/src/commonMain/kotlin/com/example/myapp/network/HttpClient.kt
 package com.example.weatherapp2.network
 
 import io.ktor.client.*
