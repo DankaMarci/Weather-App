@@ -7,8 +7,10 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.json.*
 import io.ktor.http.encodeURLParameter
+import com.example.weatherapp2.weather.*
 
 class ApiService(private val httpClient: HttpClient) {
+    private val json = Json { ignoreUnknownKeys = true }
 
     suspend fun getCoordinates(city: String): Pair<Float, Float> {
         if (city.isEmpty()) {
@@ -16,17 +18,16 @@ class ApiService(private val httpClient: HttpClient) {
         }
         val encodedCity = city.encodeURLParameter()
         val baseUrl = "https://api.openweathermap.org/geo/1.0/direct?q=${encodedCity}&limit=5&appid=5459fb445f2ceefa006ae17934b9fd0a"
-        val cords = httpClient.get(baseUrl) // Use the injected httpClient instead of the global one
+        val cords = httpClient.get(baseUrl)
         val body = cords.bodyAsText()
-        println("Response body: $body")
 
         try {
-            val jsonArray = Json.parseToJsonElement(body).jsonArray
+            val jsonArray = json.parseToJsonElement(body).jsonArray
             if (jsonArray.isNotEmpty()) {
                 val firstResult = jsonArray[0].jsonObject
                 val lat = firstResult["lat"]?.jsonPrimitive?.float ?: 0f
                 val lon = firstResult["lon"]?.jsonPrimitive?.float ?: 0f
-                println("Coordinates: lat=$lat, lon=$lon")
+                println("Coordinates found: lat=$lat, lon=$lon")
                 return Pair(lat, lon)
             }
         } catch (e: Exception) {
@@ -35,11 +36,20 @@ class ApiService(private val httpClient: HttpClient) {
         return Pair(0f, 0f)
     }
 
-    suspend fun getWeather(lat: Float, lon: Float) {
-        val baseUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=5459fb445f2ceefa006ae17934b9fd0a"
-        val weather = httpClient.get(baseUrl) // Use the injected httpClient instead of the global one
-        val weatherData = weather.bodyAsText()
-        println(weatherData)
+    suspend fun getWeather(lat: Float, lon: Float): Weather? {
+        try {
+            val baseUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=5459fb445f2ceefa006ae17934b9fd0a"
+            val response = httpClient.get(baseUrl)
+            val body = response.bodyAsText()
+
+            return json.decodeFromString<Weather>(body).also {
+                println("Weather data received for: ${it.name}")
+                println("Temperature: ${it.main.temp}°C")
+                println("Condition: ${it.weather.firstOrNull()?.description ?: "Unknown"}")
+            }
+        } catch (e: Exception) {
+            println("Error fetching weather: ${e.message}")
+            return null
+        }
     }
 }
-

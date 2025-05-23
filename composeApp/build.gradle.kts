@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 //repositories {
@@ -80,6 +81,7 @@ kotlin {
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
         }
         val desktopMain by getting
         desktopMain.dependencies {
