@@ -5,11 +5,11 @@ import androidx.compose.ui.window.ComposeViewport
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
 import kotlinx.browser.document
+import org.jetbrains.compose.web.renderComposable
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    //val client = HttpClient(Js)
-    ComposeViewport(document.body!!) {
+    renderComposable(rootElementId = "root") {
         App()
     }
 }

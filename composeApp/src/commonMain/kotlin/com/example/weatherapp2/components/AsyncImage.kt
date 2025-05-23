@@ -16,31 +16,14 @@ import kotlinx.coroutines.withContext
 import com.example.weatherapp2.httpClient
 
 @Composable
-fun AsyncImage(
+expect fun AsyncImage(
     resource: String,
     contentDescription: String?,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit
-) {
-    var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+)
 
-    LaunchedEffect(resource) {
-        try {
-            val bytes = httpClient().get(resource).readBytes()
-            imageBitmap = loadImageBitmap(bytes)
-        } catch (e: Exception) {
-            println("Error loading image: ${e.message}")
-        }
-    }
+//expect fun loadImageBitmap(bytes: ByteArray): ImageBitmap
 
-    imageBitmap?.let { bitmap ->
-        Image(
-            bitmap = bitmap,
-            contentDescription = contentDescription,
-            modifier = modifier,
-            contentScale = contentScale
-        )
-    }
-}
-
-expect fun loadImageBitmap(bytes: ByteArray): ImageBitmap
+//@Composable
+//expect fun AsyncImage(resource: String, contentDescription: String?, modifier: Modifier, contentScale: ContentScale)

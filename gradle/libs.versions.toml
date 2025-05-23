@@ -29,6 +29,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version = "0.11.0" }
+renderComposable = { module = "org.jetbrains.compose.runtime:runtime-compose", version.ref = "composeMultiplatform" }
 
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
