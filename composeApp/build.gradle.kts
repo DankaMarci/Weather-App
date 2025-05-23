@@ -60,10 +60,9 @@ kotlin {
         }
     }
 
-    sourceSets {
-        val desktopMain by getting
-        val iosMain by creating
+    //applyDefaultHierarchyTemplate()
 
+    sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -82,6 +81,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
         }
+        val desktopMain by getting
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
@@ -99,6 +99,7 @@ kotlin {
             }
         }
 
+        val iosMain by creating
         iosMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
             implementation(libs.ktor.client.darwin)

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,33 +30,30 @@ val apiService = ApiService(httpClient)
 fun App() {
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
+        var searchText by remember { mutableStateOf("") }
         val coroutineScope = rememberCoroutineScope()
+
         Column(
             modifier = Modifier
                 .safeContentPadding()
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
-            }
+            OutlinedTextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                label = { Text("Enter city name") },
+                modifier = Modifier.fillMaxWidth().safeContentPadding()
+            )
             Button(onClick = {
                 coroutineScope.launch {
-                    val (lat, lon) = apiService.getCoordinates("Budapest")
+                    val (lat, lon) = apiService.getCoordinates(searchText)
                     apiService.getWeather(lat, lon)
                 }
             }) {
-                Text("Get Coordinates")
+                Text("Search Weather")
             }
         }
     }
 }
-
 
