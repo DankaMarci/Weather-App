@@ -82,6 +82,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+            implementation("org.jetbrains.skiko:skiko:0.7.85")
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
         }
         val desktopMain by getting
         desktopMain.dependencies {
@@ -133,3 +135,4 @@ compose.desktop {
         }
     }
 }
+
