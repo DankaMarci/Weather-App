@@ -231,10 +231,10 @@ fun App() {
                                     text = currentWeather.name,
                                     style = MaterialTheme.typography.headlineMedium
                                 )
-//                                WeatherIcon(
-//                                    currentWeather.weather.firstOrNull()?.icon ?: "",
-//                                    modifier = Modifier.size(100.dp)
-//                                )
+                                WeatherIcon(
+                                    currentWeather.weather.firstOrNull()?.icon ?: "",
+                                    modifier = Modifier.size(100.dp)
+                                )
                                 Text(
                                     text = "${currentWeather.main.temp.toInt()}°C",
                                     style = MaterialTheme.typography.displayLarge
@@ -329,10 +329,10 @@ fun App() {
                                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-//                                            WeatherIcon(
-//                                                dailyForecast.icon,
-//                                                modifier = Modifier.size(40.dp)
-//                                            )
+                                            WeatherIcon(
+                                                dailyForecast.icon,
+                                                modifier = Modifier.size(40.dp)
+                                            )
                                             Column(
                                                 horizontalAlignment = Alignment.End
                                             ) {

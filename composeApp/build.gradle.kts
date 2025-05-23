@@ -1,5 +1,5 @@
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -82,7 +82,6 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-            //implementation("org.jetbrains.skiko:skiko:0.7.85")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
         }
         val desktopMain by getting
@@ -101,6 +100,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.html)
                 implementation(compose.web.core)
+                implementation(compose.runtime)
                 //implementation(compose.web.dom)
             }
         }
@@ -112,6 +112,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
         }
+
 
 //        wasmJsMain.dependencies {
 //            //implementation(compose.web.core)
