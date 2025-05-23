@@ -52,4 +52,20 @@ class ApiService(private val httpClient: HttpClient) {
             return null
         }
     }
+
+    suspend fun getForecast(lat: Float, lon: Float): WeatherForecast? {
+        try {
+            val baseUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=96&appid=5459fb445f2ceefa006ae17934b9fd0a"
+            val response = httpClient.get(baseUrl)
+            val body = response.bodyAsText()
+
+            return json.decodeFromString<WeatherForecast>(body).also {
+                println("Forecast data received for: ${it.city.name}")
+                println("Number of forecasts: ${it.list.size}")
+            }
+        } catch (e: Exception) {
+            println("Error fetching forecast: ${e.message}")
+            return null
+        }
+    }
 }
