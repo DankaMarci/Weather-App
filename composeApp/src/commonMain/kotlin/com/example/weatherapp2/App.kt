@@ -365,7 +365,6 @@ fun App() {
                 }
             }
 
-            // Loading overlay
             if (isLoading) {
                 Box(
                     modifier = Modifier

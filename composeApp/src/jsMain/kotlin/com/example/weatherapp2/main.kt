@@ -1,6 +1,7 @@
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.font.FontWeight
 import com.example.weatherapp2.apiService
 import com.example.weatherapp2.network.ApiService
 import com.example.weatherapp2.weather.ForecastEntry
@@ -29,7 +30,6 @@ import kotlin.collections.component2
 
 val apiService = ApiService(HttpClient(Js))
 
-// Adat osztályok (egyszerűsített)
 data class DailyForecast(
     val date: String,
     val minTemp: Double,
@@ -80,9 +80,8 @@ fun WeatherApp() {
     var weather by remember { mutableStateOf<Weather?>(null) }
     var forecast by remember { mutableStateOf<WeatherForecast?>(null) }
     var isLoading by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
     var errorMessage by remember { mutableStateOf<String?>(null) }
-
+    var actualCity by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope { Dispatchers.Main }
 
     Div {
@@ -102,6 +101,7 @@ fun WeatherApp() {
                             weather = apiService.getWeather(lat, lon)
                             forecast = apiService.getForecast(lat, lon)
                             isLoading = false
+                            actualCity = searchText
                         }
                     println("Button clicked")
                     console.log("Button clicked")
@@ -123,7 +123,7 @@ fun WeatherApp() {
 
         weather?.let { weather ->
             Div(attrs = { classes("weather-card") }) {
-                H2 { Text(searchText) }
+                H2 { Text(actualCity) }
                 P {
                     WeatherIcon(weather.weather.firstOrNull()?.icon ?: "")
                     //Span { style { fontSize(2.em); fontWeight(FontWeight.Bold) } }
@@ -159,7 +159,7 @@ fun WeatherIcon(iconCode: String, size: CSSpxValue = 50.px) {
                 style {
                     width(size)
                     height(size)
-                    property("vertical-align", "middle") // CSS tulajdonságok
+                    property("vertical-align", "middle")
                     marginRight(8.px)
                 }
             }

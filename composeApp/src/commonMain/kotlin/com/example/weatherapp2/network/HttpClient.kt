@@ -19,7 +19,7 @@ fun createPlatformHttpClient(): HttpClient {
             level = LogLevel.BODY
         }
         defaultRequest {
-            url("https://api.example.com") // Alapértelmezett URL
+            url("https://api.example.com")
         }
     }
 }
